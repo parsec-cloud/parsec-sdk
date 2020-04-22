@@ -36,6 +36,7 @@ struct context {
 	float scale;
 	ParsecDSO *parsec;
 	SDL_Window *window;
+	SDL_GLContext *glContext;
 	SDL_Surface *surface;
 	SDL_Cursor *cursor;
 	SDL_AudioDeviceID audio;
@@ -112,8 +113,12 @@ static int32_t renderThread(void *opaque)
 {
 	struct context *context = (struct context *) opaque;
 
-	SDL_GLContext *gl = SDL_GL_CreateContext(context->window);
 	SDL_GL_SetSwapInterval(1);
+#if defined(__APPLE__)
+	SDL_GL_MakeCurrent(context->window, context->glContext);
+#else
+	context->glContext = SDL_GL_CreateContext(context->window);
+#endif
 
 	while (!context->done) {
 		int32_t w = 0, h = 0;
@@ -130,7 +135,7 @@ static int32_t renderThread(void *opaque)
 	}
 
 	ParsecClientGLDestroy(context->parsec);
-	SDL_GL_DeleteContext(gl);
+	SDL_GL_DeleteContext(context->glContext);
 
 	return 0;
 }
@@ -157,6 +162,10 @@ int32_t main(int32_t argc, char **argv)
 
 	context.window = SDL_CreateWindow("Parsec Client Demo", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		WINDOW_W, WINDOW_H, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+
+#if defined(__APPLE__)
+	context.glContext = SDL_GL_CreateContext(context.window);
+#endif
 
 	int32_t glW = 0;
 	SDL_GL_GetDrawableSize(context.window, &glW, NULL);
