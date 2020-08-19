@@ -71,7 +71,7 @@ Feeding an invalid `x-api-key` will lead to HTTP statuses 403 Forbidden or 500 I
   ```bash
   curl -X "POST" "https://kessel-api.parsecgaming.com/enterprise/sessions" \
     -H 'x-api-key: YOUR_API_KEY' \
-    -H 'Content-Type: application/json \
+    -H 'Content-Type: application/json' \
     -d $'{ "external_id": "SOME_UNIQUE_ID" }'
   ```
 
