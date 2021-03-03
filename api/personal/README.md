@@ -22,7 +22,7 @@ The `/v1/auth` call may return a `403` if two factor auth is required. If using 
 
 * Request
   ```text
-  POST https://api.parsecgaming.com/v1/auth/
+  POST https://kessel-api.parsecgaming.com/v1/auth/
 
   Headers:
     Content-Type: application/json
@@ -48,7 +48,7 @@ The `/v1/auth` call may return a `403` if two factor auth is required. If using 
 
 * cURL Example
   ```bash
-  curl -X "POST" "https://api.parsecgaming.com/v1/auth" \
+  curl -X "POST" "https://kessel-api.parsecgaming.com/v1/auth" \
     -H 'Content-Type: application/json \
     -d $'{ "email": "YOUR_EMAIL_ADDRESS", "password": "YOUR_PASSWORD" }'
   ```
