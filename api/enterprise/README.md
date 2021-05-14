@@ -21,9 +21,11 @@ The `/enterprise/sessions` endpoint allows you to obtain a `sessionID` associate
 
 This endpoint may be called multiple times for the same `external_id`, it will return a unique `sessionID` each time for a new device. You do not need to request a new `sessionID` every time a device connects -- rather, the intent is that each unique device should have one `sessionID`.
 
+Feeding an invalid `x-api-key` will lead to HTTP statuses 403 Forbidden or 500 Internal Server Error (invalid `x-api-key` format).
+
 * Request
   ```text
-  POST https://kessel-api.parsecgaming.com/enterprise/
+  POST https://kessel-api.parsecgaming.com/enterprise/sessions
 
   Headers:
     x-api-key: YOUR_ENTERPRISE_API_KEY
@@ -48,12 +50,28 @@ This endpoint may be called multiple times for the same `external_id`, it will r
     }
   }
   ```
+  
+* Invalid API Key
+  ```javascript
+  STATUS 403
+  
+  {
+    "error": "invalid api key"
+  }
+  ```
+  ```javascript
+  STATUS 500
+  
+  {                                                                                                                                                                                                                                                       
+    "message": "Internal Server Error"
+  }
+  ```
 
 * cURL Example
   ```bash
   curl -X "POST" "https://kessel-api.parsecgaming.com/enterprise/sessions" \
     -H 'x-api-key: YOUR_API_KEY' \
-    -H 'Content-Type: application/json \
+    -H 'Content-Type: application/json' \
     -d $'{ "external_id": "SOME_UNIQUE_ID" }'
   ```
 
